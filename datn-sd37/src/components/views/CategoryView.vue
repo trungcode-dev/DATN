@@ -1,65 +1,73 @@
 <template>
-  <div class="container mt-5">
-    <template v-if="currentProduct">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><router-link to="/">Trang chủ</router-link></li>
-          <li class="breadcrumb-item active" aria-current="page">{{ currentProduct.name }}</li>
-        </ol>
-      </nav>
+  <div class="container-fluid px-5">
+    
+    <CategoryBanner />
 
-      <h2 class="mb-4 fw-bold">{{ currentProduct.name }}</h2>
+    <div class="row mt-5 pt-3">
       
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0">
-            <img :src="currentProduct.image" class="card-img-top p-3" alt="Case Image">
-            <div class="card-body text-center">
-              <h5 class="card-title fw-bold">{{ currentProduct.name }}</h5>
-              <p class="card-text text-muted small">{{ currentProduct.description }}</p>
-              <h5 class="text-danger fw-bold mb-3">{{ currentProduct.price }}</h5>
-              <button class="btn btn-dark w-100 rounded-pill">Thêm vào giỏ</button>
-            </div>
+      <div class="col-lg-3 col-md-4 d-none d-md-block">
+        <FilterSidebar @filter-changed="handleFilterChange" />
+      </div>
+
+      <div class="col-lg-9 col-md-8 text-dark">
+        <div class="d-flex justify-content-between align-items-center mb-5 pb-2">
+          <span class="fw-bold fs-5">{{ filteredProducts.length }} products</span>
+          <span class="text-muted">Sort by: Featured <i class="bi bi-chevron-down ms-1"></i></span>
+        </div>
+
+        <div class="row g-5">
+          <div class="col-lg-4 col-md-6" v-for="product in filteredProducts" :key="product.id">
+            <ProductCard :item="product" />
           </div>
         </div>
-      </div>
-    </template>
 
-    <div v-else class="text-center mt-5">
-      <h2 class="fw-bold">Không tìm thấy sản phẩm! 😢</h2>
-      <p class="text-muted">Sản phẩm bạn tìm (<strong>{{ route.params.slug }}</strong>) không tồn tại hoặc đã hết hàng.</p>
-      <router-link to="/" class="btn btn-outline-dark mt-3">Quay lại trang chủ</router-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, computed } from 'vue';
+import CategoryBanner from '../CategoryBanner.vue';
+import FilterSidebar from '../FilterSidebar.vue';
+import ProductCard from '../ProductCard.vue';
+import { productsDB } from '../data/cases'; // Import dữ liệu
 
-const route = useRoute();
+// 1. Tạo biến để lưu lại các tiêu chí lọc đang được chọn
+const activeFilters = ref({
+  types: [] as string[],
+  colors: [] as string[],
+  caseFeatures: [] as string[],
+  screenFeatures: [] as string[]
+});
 
-// 1. Tạo một "Kho dữ liệu" giả lập chứa 2 sản phẩm của bạn
-const productsDB = [
-  {
-    slug: 'iphone-17-pro-max',
-    name: 'Super Thin Case cho iPhone 17 Pro Max',
-    price: '$39.00',
-    description: 'Bảo vệ camera siêu tốt, viền mỏng nhẹ cho bản Max.',
-    image: 'https://placehold.co/400x400/222222/ffffff?text=iPhone+17+Pro+Max'
-  },
-  {
-    slug: 'iphone-17-pro',
-    name: 'Super Thin Case cho iPhone 17 Pro',
-    price: '$35.00',
-    description: 'Thiết kế tối giản, giữ nguyên form dáng bản Pro.',
-    image: 'https://placehold.co/400x400/eeeeee/333333?text=iPhone+17+Pro'
-  }
-];
+// 2. Hàm này hứng dữ liệu khi Sidebar bấm checkbox
+const handleFilterChange = (filters: any) => {
+  activeFilters.value = filters;
+};
 
-// 2. Hàm này sẽ tự động tìm trong Kho dữ liệu xem có sản phẩm nào
-// trùng với cái "slug" trên thanh URL không.
-const currentProduct = computed(() => {
-  return productsDB.find(product => product.slug === route.params.slug);
+// 3. TỰ ĐỘNG LỌC SẢN PHẨM: Khi activeFilters thay đổi, danh sách này tự tính toán lại
+const filteredProducts = computed(() => {
+  return productsDB.filter((product) => {
+    // Nếu mảng rỗng (không tích ô nào) thì coi như khớp hết (return true)
+    
+    // Lọc theo Loại
+    const matchType = activeFilters.value.types.length === 0 || activeFilters.value.types.includes(product.type);
+    
+    // Lọc theo Màu (Chỉ kiểm tra cho ốp lưng, nếu màu sản phẩm có chứa trong mảng màu được tích)
+    const matchColor = activeFilters.value.colors.length === 0 || 
+                      (product.colors && product.colors.some(c => activeFilters.value.colors.includes(c)));
+    
+    // Lọc theo Case Features
+    const matchCaseFeature = activeFilters.value.caseFeatures.length === 0 ||
+                            (product.features && activeFilters.value.caseFeatures.every(f => product.features.includes(f)));
+
+    // Lọc theo Screen Features
+    const matchScreenFeature = activeFilters.value.screenFeatures.length === 0 ||
+                              (product.features && activeFilters.value.screenFeatures.every(f => product.features.includes(f)));
+    
+    // Phải khớp TẤT CẢ các tiêu chí lọc mới được hiện ra
+    return matchType && matchColor && matchCaseFeature && matchScreenFeature;
+  });
 });
 </script>
