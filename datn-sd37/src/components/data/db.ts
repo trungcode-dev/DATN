@@ -1,120 +1,22 @@
-// File: src/data/db.ts
+// src/components/data/db.ts
 
-// Dữ liệu sản phẩm iPhone 17 Pro Max
-export const productsDB = [
-  // --- CASES ---
-  {
-    id: 1,
-    type: 'case-super-thin', // Mã loại để lọc
-    typeName: 'Super Thin Case', // Tên loại hiển thị
-    slug: 'super-thin-iphone-17-pro-max',
-    name: 'Super Thin iPhone 17 Pro Max Case',
-    price: '$35.00',
-    oldPrice: '$39.00',
-    image: 'https://placehold.co/400x400/222222/ffffff?text=Super+Thin', // Thay URL ảnh thật vào đây
-    colors: ['#333333', '#000000', '#eeeae3', '#ffffff', '#ff9f43', '#4e5b6e', '#6f6c9d', '#eee'], // Các mã màu
-    features: ['thin-design']
-  },
-  {
-    id: 2,
-    type: 'case-magnetic',
-    typeName: 'Magnetic Case',
-    slug: 'magnetic-iphone-17-pro-max',
-    name: 'Magnetic iPhone 17 Pro Max Case',
-    price: '$39.00',
-    oldPrice: '$45.00',
-    image: 'https://placehold.co/400x400/333333/ffffff?text=Magnetic',
-    colors: ['#000', '#6f6c9d', '#eeeae3', '#4e5b6e', '#ff9f43', '#7e936f', '#333'],
-    features: ['magsafe-compatible']
-  },
-  {
-    id: 3,
-    type: 'case-flex',
-    typeName: 'Flex Case',
-    slug: 'flex-iphone-17-pro-max',
-    name: 'Flex iPhone 17 Pro Max Case',
-    price: '$35.00',
-    oldPrice: '$39.00',
-    image: 'https://placehold.co/400x400/transparent/333?text=Flex',
-    colors: ['#ffffff'],
-    features: ['easy-grip']
-  },
-  {
-    id: 4,
-    type: 'case-active',
-    typeName: 'Active Case',
-    slug: 'active-iphone-17-pro-max',
-    name: 'Active iPhone 17 Pro Max Case',
-    price: '$39.00',
-    oldPrice: '$45.00',
-    image: 'https://placehold.co/400x400/333333/ffffff?text=Active',
-    colors: ['#000', '#eeeae3', '#4e5b6e', '#ff9f43', '#7e936f', '#333', '#eeeae3', '#4e5b6e'],
-    features: ['drop-tested']
-  },
-  {
-    id: 5,
-    type: 'case-repeel',
-    typeName: 'RePeel Case',
-    slug: 'repeel-iphone-17-pro-max',
-    name: 'RePeel iPhone 17 Pro Max Case',
-    price: '$39.00',
-    oldPrice: '$45.00',
-    image: 'https://placehold.co/400x400/333333/ffffff?text=RePeel',
-    colors: ['#000'],
-    features: ['recycled-material']
-  },
-  
-  // --- SCREEN PROTECTION ---
-  {
-    id: 6,
-    type: 'screen-glass',
-    typeName: 'Glass Screen Protector',
-    slug: 'glass-iphone-17-pro-max',
-    name: 'iPhone 17 Pro Max Glass Screen Protector',
-    price: '$29.00',
-    oldPrice: '$35.00',
-    image: 'https://placehold.co/400x400/e6e6e6/333333?text=Glass',
-    features: ['9h-hardness']
-  },
-  {
-    id: 7,
-    type: 'screen-privacy',
-    typeName: 'Privacy Glass Screen Protector',
-    slug: 'privacy-glass-iphone-17-pro-max',
-    name: 'iPhone 17 Pro Max Privacy Glass Screen Protector',
-    price: '$35.00',
-    oldPrice: '$40.00',
-    image: 'https://placehold.co/400x400/e6e6e6/333333?text=Privacy',
-    features: ['privacy-filtering']
-  }
-];
-
-// Định nghĩa dữ liệu cho Sidebar để code FilterSidebar.vue được động
 export const filterData = {
-  types: [
-    { value: 'case-super-thin', label: 'Super Thin Case' },
-    { value: 'case-magnetic', label: 'Magnetic Case' },
-    { value: 'case-flex', label: 'Flex Case' },
-    { value: 'screen-glass', label: 'Glass Screen Protector' },
-    { value: 'screen-privacy', label: 'Privacy Glass Screen Protector' },
-    { value: 'case-active', label: 'Active Case' },
-    { value: 'case-repeel', label: 'RePeel Case' }
-  ],
-  colors: [
-    { value: '#000', label: 'Black' },
-    { value: '#7e936f', label: 'Green' },
-    { value: '#ff9f43', label: 'Orange' },
-    { value: '#4e5b6e', label: 'Blue' },
-    { value: '#6f6c9d', label: 'Purple' }
-  ],
-  caseFeatures: [
-    { value: 'drop-tested', label: 'Drop-Tested' },
-    { value: 'easy-grip', label: 'Easy Grip' },
-    { value: 'magsafe-compatible', label: 'MagSafe-Compatible' },
-    { value: 'thin-design', label: 'Thin Design' }
-  ],
-  screenFeatures: [
-    { value: '9h-hardness', label: '9H Hardness Rating' },
-    { value: 'privacy-filtering', label: '28° Privacy Filtering' }
+  colors: ["#414141", "#000000", "#E4DED1", "#FFFFFF", "#FF924E", "#4A5368", "#645D71", "#F3F3F3", "linear-gradient(180deg, #000 0%, #555 100%)", "#232323", "#1F473A"],
+  groups: [
+    { title: "Thương hiệu", stateKey: "brands", type: "checkbox", isOpen: true, items: [{ label: "Apple (15)", value: "Apple" }, { label: "Samsung (12)", value: "Samsung" }, { label: "Xiaomi (8)", value: "Xiaomi" }] },
+    { title: "Màu sắc", type: "color", isOpen: true },
+    { title: "Bộ nhớ trong", stateKey: "storage", type: "checkbox", isOpen: true, items: [{ label: "128GB (10)", value: "128GB" }, { label: "256GB (18)", value: "256GB" }] }
   ]
 };
+
+export const productsDB = [
+  { id: 1, category: "Apple", name: "iPhone 17 Pro Max 256GB", price: 1199.00, oldPrice: 1299.00, colors: ["#333", "#fff", "#E4DED1", "#4A5368"], image: "https://placehold.co/400x400/F1F1F1/333?text=iPhone+17+Pro+Max" },
+  { id: 2, category: "Samsung", name: "Samsung Galaxy S24 Ultra 512GB", price: 1299.00, oldPrice: 1399.00, colors: ["#333", "#000", "#E4DED1", "#fff", "#645D71"], image: "https://placehold.co/400x400/F1F1F1/333?text=Galaxy+S24+Ultra" },
+  { id: 3, category: "Apple", name: "iPhone 17 Pro 128GB", price: 999.00, oldPrice: 1099.00, colors: ["#333", "#fff", "#E4DED1"], image: "https://placehold.co/400x400/F1F1F1/333?text=iPhone+17+Pro" },
+  { id: 4, category: "Xiaomi", name: "Xiaomi 14 Ultra 512GB", price: 899.00, oldPrice: 999.00, colors: ["#000", "#fff"], image: "https://placehold.co/400x400/F1F1F1/333?text=Xiaomi+14+Ultra" }
+];
+
+export const comparisonsData = [
+  { name: "iPhone 17 Pro Max", desc1: "Đỉnh Cao Công Nghệ", desc2: "Màn hình 6.9 inch", btnText: "Mua iPhone 17 Pro Max", performance: 95, camera: 95, battery: 90, reasons: ["Yêu thích hệ sinh thái Apple", "Cần camera quay video", "Thích màn hình cực lớn"], img: "https://placehold.co/200x400/transparent/333?text=17+Pro+Max" },
+  { name: "Galaxy S24 Ultra", desc1: "Quyền Năng AI Đột Phá", desc2: "Tích hợp bút S-Pen", btnText: "Mua Galaxy S24 Ultra", performance: 90, camera: 98, battery: 85, reasons: ["Thích tính năng Galaxy AI", "Thường xuyên ghi chú", "Chụp ảnh zoom 10x"], img: "https://placehold.co/200x400/transparent/333?text=S24+Ultra" }
+];
