@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <Header />
 
     <main>
       <router-view />
@@ -9,5 +9,5 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from './components/layout/Navbar.vue';
+import Header from './components/layout/Header.vue';
 </script>
