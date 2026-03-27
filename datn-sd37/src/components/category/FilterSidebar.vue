@@ -7,7 +7,7 @@
         <i class="bi text-dark" :class="open.type ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
       </div>
       <div v-show="open.type" class="filter-options">
-        <div class="form-check mb-2" v-for="item in filterData.types" :key="item.name">
+        <div class="form-check mb-2" v-for="item in types" :key="item.name">
           <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'type-'+item.name" :value="item.name" v-model="selectedTypes">
           <label class="form-check-label text-dark" :for="'type-'+item.name">
             {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
@@ -22,7 +22,7 @@
         <i class="bi text-dark" :class="open.model ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
       </div>
       <div v-show="open.model" class="filter-options">
-        <div class="form-check mb-2" v-for="item in filterData.models" :key="item.name">
+        <div class="form-check mb-2" v-for="item in models" :key="item.name">
           <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'model-'+item.name" :value="item.name" v-model="selectedModels">
           <label class="form-check-label text-dark" :for="'model-'+item.name">
             {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
@@ -37,11 +37,11 @@
         <i class="bi text-dark" :class="open.color ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
       </div>
       <div v-show="open.color" class="d-flex flex-wrap gap-2">
-        <div v-for="color in filterData.colors" :key="color.hex"
+        <div v-for="color in staticData.colors" :key="color"
              class="color-swatch rounded-circle cursor-pointer border"
-             :style="{ background: color.hex }"
-             :class="{ 'border-dark border-2 scale-up': selectedColors.includes(color.hex) }"
-             @click="toggleColor(color.hex)">
+             :style="{ background: color }"
+             :class="{ 'border-dark border-2 scale-up': selectedColors.includes(color) }"
+             @click="toggleColor(color)">
         </div>
         <div class="w-100 mt-2">
           <span class="text-decoration-underline small cursor-pointer text-dark fw-medium">+ Show More</span>
@@ -55,10 +55,10 @@
         <i class="bi text-dark" :class="open.caseFeature ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
       </div>
       <div v-show="open.caseFeature" class="filter-options">
-        <div class="form-check mb-2" v-for="item in filterData.caseFeatures" :key="item.name">
+        <div class="form-check mb-2" v-for="item in staticData.caseFeatures" :key="item.name">
           <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'cf-'+item.name" :value="item.name" v-model="selectedFeatures">
           <label class="form-check-label text-dark" :for="'cf-'+item.name">
-            {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
+            {{ item.name }}
           </label>
         </div>
       </div>
@@ -70,10 +70,10 @@
         <i class="bi text-dark" :class="open.screenFeature ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
       </div>
       <div v-show="open.screenFeature" class="filter-options">
-        <div class="form-check mb-2" v-for="item in filterData.screenFeatures" :key="item.name">
+        <div class="form-check mb-2" v-for="item in staticData.screenFeatures" :key="item.name">
           <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'sf-'+item.name" :value="item.name" v-model="selectedFeatures">
           <label class="form-check-label text-dark" :for="'sf-'+item.name">
-            {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
+            {{ item.name }}
           </label>
         </div>
       </div>
@@ -83,101 +83,52 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
 
-// Kết nối với CategoryView để lọc thật
+// Nhận Types và Models từ CategoryView truyền vào
+defineProps<{
+  types: { name: string, count: number }[],
+  models: { name: string, count: number }[]
+}>()
+
+// MỞ CỔNG KẾT NỐI 2 CHIỀU ĐỂ LỌC
 const selectedTypes = defineModel<string[]>('selectedTypes', { default: () => [] })
 const selectedModels = defineModel<string[]>('selectedModels', { default: () => [] })
 const selectedFeatures = defineModel<string[]>('selectedFeatures', { default: () => [] })
-const selectedColors = ref<string[]>([])
+const selectedColors = defineModel<string[]>('selectedColors', { default: () => [] })
 
-// Trạng thái Đóng/Mở của các thẻ
+// Đóng mở các Tab
 const open = reactive({
-  type: true,
-  model: true,
-  color: true,
-  caseFeature: true,
-  screenFeature: true
+  type: true, model: true, color: true, caseFeature: true, screenFeature: true
 })
+const toggle = (section: keyof typeof open) => { open[section] = !open[section] }
 
-const toggle = (section: keyof typeof open) => {
-  open[section] = !open[section]
-}
-
+// Logic bấm chọn Color
 const toggleColor = (hex: string) => {
   const index = selectedColors.value.indexOf(hex)
   if (index > -1) selectedColors.value.splice(index, 1)
   else selectedColors.value.push(hex)
 }
 
-// Dữ liệu giả lập chuẩn xác 100% theo ảnh bạn gửi
-const filterData = {
-  types: [
-    { name: 'Super Thin Case', count: 1 },
-    { name: 'Magnetic Case', count: 1 },
-    { name: 'Flex Case', count: 1 },
-    { name: 'Glass Screen Protector', count: 1 },
-    { name: 'Privacy Glass Screen Protector', count: 1 },
-    { name: 'Active Case', count: 1 },
-    { name: 'RePeel Case', count: 1 }
-  ],
-  models: [
-    { name: 'iPhone 17 Pro Max', count: 7 }
-  ],
-  colors: [
-    { hex: '#333333' }, { hex: '#000000' }, { hex: '#e2dcca' }, { hex: '#ffffff' }, 
-    { hex: '#e88c4a' }, { hex: '#424b5a' }, { hex: '#4f4756' }, { hex: '#f4f4f4' }, 
-    { hex: 'linear-gradient(135deg, #555, #000)' }, { hex: '#fdfdfd' }, { hex: '#1a1f24' }, 
-    { hex: '#1d5939' }, { hex: '#b5ab9d' }, { hex: '#183f6b' }
-  ],
+// Dữ liệu tĩnh cho Features & Colors
+const staticData = {
+  colors: ["#414141", "#000000", "#E4DED1", "#FFFFFF", "#FF924E", "#4A5368", "#645D71", "#F3F3F3", "linear-gradient(180deg, #000 0%, #555 100%)", "#232323", "#1F473A"],
   caseFeatures: [
-    { name: 'Drop-Tested', count: 2 },
-    { name: 'Easy Grip', count: 1 },
-    { name: 'Magsafe-Compatible', count: 1 },
-    { name: 'Pocket friendly', count: 4 },
-    { name: 'Shockproof', count: 1 },
-    { name: 'Snug fit', count: 4 },
-    { name: 'Thin Design', count: 1 }
+    { name: 'Drop-Tested' }, { name: 'Easy Grip' }, { name: 'Magsafe-Compatible' },
+    { name: 'Pocket friendly' }, { name: 'Shockproof' }, { name: 'Snug fit' }, { name: 'Thin Design' }
   ],
   screenFeatures: [
-    { name: '9H Hardness Rating', count: 1 },
-    { name: '28° Privacy Filtering', count: 1 },
-    { name: 'Reinforced Silicone Edges', count: 1 },
-    { name: '3D Design', count: 1 },
-    { name: 'HD Clarity', count: 1 },
-    { name: 'Oleophobic Coating', count: 1 },
-    { name: 'Anti-Fingerprint', count: 1 }
+    { name: '9H Hardness Rating' }, { name: '28° Privacy Filtering' }, { name: 'Reinforced Silicone Edges' },
+    { name: '3D Design' }, { name: 'HD Clarity' }, { name: 'Oleophobic Coating' }, { name: 'Anti-Fingerprint' }
   ]
 }
 </script>
 
 <style scoped>
 .cursor-pointer { cursor: pointer; }
-
-/* Tùy chỉnh ô Checkbox vuông vắn, viền nhạt giống Peel */
-.form-check-input {
-  width: 1.1em;
-  height: 1.1em;
-  margin-top: 0.25em;
-  border-color: #adb5bd;
-}
-.form-check-input:checked {
-  background-color: #000;
-  border-color: #000;
-}
-
-/* Tùy chỉnh các chấm màu (Color Swatches) */
-.color-swatch {
-  width: 32px;
-  height: 32px;
-  border-color: #dee2e6 !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.color-swatch:hover {
-  transform: scale(1.1);
-}
-.color-swatch.scale-up {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
-}
+.form-check-input { width: 1.1em; height: 1.1em; margin-top: 0.25em; border-color: #adb5bd; }
+.form-check-input:checked { background-color: #000; border-color: #000; }
+.color-swatch { width: 32px; height: 32px; border-color: #dee2e6 !important; transition: all 0.2s ease; }
+.color-swatch:hover { transform: scale(1.1); }
+.color-swatch.scale-up { transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
 </style>

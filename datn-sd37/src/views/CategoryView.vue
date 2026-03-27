@@ -1,5 +1,5 @@
 <template>
-  <div class="category-page py-5">
+  <div class="category-page py-5" style="font-family: 'Inter', sans-serif;">
     <div class="container-fluid px-4 px-xl-5">
       <div class="row">
         <div class="col-lg-3">
@@ -8,16 +8,18 @@
             :models="dynamicPhoneModels"
             v-model:selectedTypes="selectedTypes"
             v-model:selectedModels="selectedModels"
+            v-model:selectedFeatures="selectedFeatures"
+            v-model:selectedColors="selectedColors"
           />
         </div>
 
         <div class="col-lg-9">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <span class="text-secondary">{{ sortedProducts.length }} sản phẩm</span>
+          <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <span class="text-secondary fw-medium">{{ sortedProducts.length }} sản phẩm</span>
             
             <div class="d-flex align-items-center gap-2">
-              <span class="small fw-bold text-uppercase">Sort by:</span>
-              <select v-model="sortBy" class="form-select form-select-sm border-0 shadow-none w-auto fw-medium">
+              <span class="small fw-bold text-uppercase text-dark">Sort by:</span>
+              <select v-model="sortBy" class="form-select form-select-sm border-0 shadow-none w-auto fw-medium bg-transparent cursor-pointer">
                 <option value="featured">Featured</option>
                 <option value="price-asc">Price, low to high</option>
                 <option value="price-desc">Price, high to low</option>
@@ -28,6 +30,11 @@
           </div>
 
           <div class="row g-4">
+            <div v-if="sortedProducts.length === 0" class="col-12 text-center py-5">
+              <p class="text-muted">Không tìm thấy sản phẩm nào phù hợp với bộ lọc của bạn.</p>
+              <button class="btn btn-outline-dark mt-2" @click="clearFilters">Xóa bộ lọc</button>
+            </div>
+
             <div class="col-6 col-md-4 col-xl-3" v-for="product in sortedProducts" :key="product.id">
               <ProductCard :product="product" />
             </div>
@@ -47,7 +54,7 @@ import ProductCard from '../components/category/ProductCard.vue'
 
 const route = useRoute()
 
-// --- 1. PHÂN TÍCH URL ---
+// 1. Phân tích Link
 const pageInfo = computed(() => {
   const path = route.path.toLowerCase()
   return {
@@ -59,10 +66,9 @@ const pageInfo = computed(() => {
   }
 })
 
-// --- 2. DỮ LIỆU GỐC THEO TRANG (FIX LỖI ÉP KIỂU) ---
+// 2. Lấy danh sách sản phẩm theo Trang
 const baseProducts = computed<Product[]>(() => {
   const { isCharging, isAccessories, isScreen, brand } = pageInfo.value
-
   const filtered = productsDB.filter(p => {
     if (isCharging && p.category !== 'Charging') return false
     if (isAccessories && p.category !== 'Accessories') return false
@@ -70,20 +76,17 @@ const baseProducts = computed<Product[]>(() => {
     if (!isCharging && !isAccessories && brand !== 'All' && p.category !== brand) return false
     return true
   })
-  
-  // Ép kiểu an toàn để tránh lỗi "Record<string, string>"
   return filtered as unknown as Product[]
 })
 
-// --- 3. QUẢN LÝ TRẠNG THÁI LỌC ---
+// 3. Quản lý trạng thái bộ lọc
 const selectedTypes = ref<string[]>([])
 const selectedModels = ref<string[]>([])
+const selectedFeatures = ref<string[]>([])
+const selectedColors = ref<string[]>([])
 const sortBy = ref('featured')
 
-// Tự động tạo dữ liệu cho Sidebar dựa trên sản phẩm thực tế đang có
-const dynamicTypes = computed(() => createFilter('type'))
-const dynamicPhoneModels = computed(() => createFilter('category'))
-
+// Tạo danh sách Model và Type cho Sidebar
 function createFilter(key: keyof Product) {
   const counts: Record<string, number> = {}
   baseProducts.value.forEach(p => {
@@ -92,43 +95,64 @@ function createFilter(key: keyof Product) {
     const name = String(val)
     counts[name] = (counts[name] || 0) + 1
   })
-  return Object.keys(counts).map(name => ({ name, count: counts[name] }))
+  
+  // ĐÃ FIX LỖI ÉP KIỂU: Thêm "|| 0" để đảm bảo count luôn là number
+  return Object.keys(counts).map(name => ({ 
+    name, 
+    count: counts[name] || 0 
+  }))
 }
 
-// --- 4. LOGIC LỌC & SẮP XẾP CHÍNH (FIX LỖI PHÂN LOẠI SAI) ---
-const sortedProducts = computed(() => {
+const dynamicTypes = computed(() => createFilter('type'))
+const dynamicPhoneModels = computed(() => createFilter('category'))
+
+const clearFilters = () => {
+  selectedTypes.value = []; selectedModels.value = []; selectedFeatures.value = []; selectedColors.value = [];
+}
+
+// 4. LOGIC LỌC TỔNG HỢP (Đã Fix case-sensitive cho Color)
+const sortedProducts = computed<Product[]>(() => {
   let res = [...baseProducts.value]
 
-  // Lọc theo Type (Ốp siêu mỏng, Kính cường lực...)
+  // Lọc theo Type
   if (selectedTypes.value.length > 0) {
-    res = res.filter(p => selectedTypes.value.includes(p.type))
+    res = res.filter(p => p.type && selectedTypes.value.some(t => t.trim().toLowerCase() === p.type.trim().toLowerCase()))
   }
 
-  // Lọc theo Model (iPhone 17, Galaxy S24...)
+  // Lọc theo Model
   if (selectedModels.value.length > 0) {
-    res = res.filter(p => selectedModels.value.includes(p.category))
+    res = res.filter(p => p.category && selectedModels.value.some(m => m.trim().toLowerCase() === p.category.trim().toLowerCase()))
   }
 
-  // Logic Sắp xếp chuẩn
-  switch (sortBy.value) {
-    case 'price-asc':
-      res.sort((a, b) => a.price - b.price); break
-    case 'price-desc':
-      res.sort((a, b) => b.price - a.price); break
-    case 'alpha-asc':
-      res.sort((a, b) => a.name.localeCompare(b.name)); break
-    case 'alpha-desc':
-      res.sort((a, b) => b.name.localeCompare(a.name)); break
-    default:
-      res.sort((a, b) => b.id - a.id); break // Mới nhất/Nổi bật
+  // LỌC THEO TÍNH NĂNG (Case & Screen Features)
+  if (selectedFeatures.value.length > 0) {
+    res = res.filter(p => p.features && p.features.some(f => selectedFeatures.value.includes(f)))
   }
-  return res
+
+  // LỌC THEO MÀU SẮC (Color) - Chống lỗi chữ hoa/chữ thường
+  if (selectedColors.value.length > 0) {
+    res = res.filter(p => 
+      p.colors && p.colors.some(c => 
+        selectedColors.value.some(sc => sc.toLowerCase() === c.toLowerCase())
+      )
+    )
+  }
+
+  // Sắp xếp
+  switch (sortBy.value) {
+    case 'price-asc': res.sort((a, b) => a.price - b.price); break;
+    case 'price-desc': res.sort((a, b) => b.price - a.price); break;
+    case 'alpha-asc': res.sort((a, b) => a.name.localeCompare(b.name)); break;
+    case 'alpha-desc': res.sort((a, b) => b.name.localeCompare(a.name)); break;
+    default: res.sort((a, b) => b.id - a.id); break;
+  }
+
+  return res as unknown as Product[]
 })
 
-// Reset lọc khi chuyển danh mục trên Menu
+// Reset khi đổi trang
 watch(pageInfo, () => {
-  selectedTypes.value = []
-  selectedModels.value = []
+  clearFilters()
   sortBy.value = 'featured'
 })
 </script>
