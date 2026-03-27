@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="checkout-page py-5" style="font-family: 'Inter', sans-serif; background-color: #f8f9fa; min-height: 100vh;">
     <div class="container px-4 px-lg-5">
       <div class="text-center mb-5">
@@ -110,4 +110,4 @@ const handleCheckout = () => {
   cartStore.items = []
   router.push('/')
 }
-</script>
+</script> -->

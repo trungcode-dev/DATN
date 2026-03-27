@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="product-info py-lg-3">
     <div class="text-secondary small mb-2 text-uppercase fw-bold" style="letter-spacing: 1px;">{{ product.type }}</div>
     <h1 class="fw-bold text-dark display-5 mb-3" style="letter-spacing: -1px;">{{ product.name }}</h1>
@@ -55,4 +55,4 @@ const quantity = ref(1)
 .cursor-pointer { cursor: pointer; }
 .add-to-cart-btn { transition: transform 0.2s ease, background-color 0.2s ease; }
 .add-to-cart-btn:hover { transform: translateY(-3px); background-color: #222; }
-</style>
+</style> -->

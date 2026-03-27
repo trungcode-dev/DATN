@@ -1,7 +1,7 @@
 <template>
   <div class="filter-sidebar pe-lg-4" style="font-family: 'Inter', sans-serif;">
     
-    <div class="filter-group mb-4 pb-4 border-bottom">
+    <div class="filter-group mb-4 pb-4 border-bottom" v-if="types && types.length > 0">
       <div class="d-flex justify-content-between align-items-center mb-3 cursor-pointer" @click="toggle('type')">
         <h5 class="fw-bold mb-0 text-dark fs-5">Type</h5>
         <i class="bi text-dark" :class="open.type ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="filter-group mb-4 pb-4 border-bottom">
+    <div class="filter-group mb-4 pb-4 border-bottom" v-if="models && models.length > 0">
       <div class="d-flex justify-content-between align-items-center mb-3 cursor-pointer" @click="toggle('model')">
         <h5 class="fw-bold mb-0 text-dark fs-5">Phone Model</h5>
         <i class="bi text-dark" :class="open.model ? 'bi-dash-lg' : 'bi-plus-lg'"></i>

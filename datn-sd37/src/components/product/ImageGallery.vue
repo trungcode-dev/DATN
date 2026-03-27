@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="image-gallery">
     <div class="main-image bg-light rounded-4 overflow-hidden mb-3 d-flex justify-content-center align-items-center" style="height: 500px; background-color: #f1f1f1 !important;">
       <img :src="activeImage" class="img-fluid mix-blend-multiply transition-all" style="max-height: 90%; object-fit: contain;" alt="Product Main Image">
@@ -29,4 +29,4 @@ watch(() => props.images, (newImages) => {
     activeImage.value = newImages[0] || ''
   }
 }, { immediate: true })
-</script>
+</script> -->
