@@ -1,88 +1,183 @@
 <template>
-  <div class="filter-sidebar pe-lg-5" style="font-family: 'Inter', sans-serif;">
-    <div class="filter-group mb-4 pb-3 border-bottom border-light-subtle" v-if="types.length > 0">
-      <h6 class="fw-bold d-flex justify-content-between align-items-center mb-3 text-dark cursor-pointer" @click="isTypeExpanded = !isTypeExpanded">
-        Loại Sản Phẩm <span class="toggle-icon" :class="{ 'expanded': isTypeExpanded }"></span>
-      </h6>
-      <div v-show="isTypeExpanded">
-        <div class="form-check custom-checkbox mb-2" v-for="typeItem in types" :key="typeItem.name">
-          <input class="form-check-input" type="checkbox" :id="'type-'+typeItem.name" :value="typeItem.name" v-model="localSelectedTypes">
-          <label class="form-check-label text-secondary" :for="'type-'+typeItem.name">
-            {{ typeItem.name }} <span class="text-muted">({{ typeItem.count }})</span>
+  <div class="filter-sidebar pe-lg-4" style="font-family: 'Inter', sans-serif;">
+    
+    <div class="filter-group mb-4 pb-4 border-bottom">
+      <div class="d-flex justify-content-between align-items-center mb-3 cursor-pointer" @click="toggle('type')">
+        <h5 class="fw-bold mb-0 text-dark fs-5">Type</h5>
+        <i class="bi text-dark" :class="open.type ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
+      </div>
+      <div v-show="open.type" class="filter-options">
+        <div class="form-check mb-2" v-for="item in filterData.types" :key="item.name">
+          <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'type-'+item.name" :value="item.name" v-model="selectedTypes">
+          <label class="form-check-label text-dark" :for="'type-'+item.name">
+            {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
           </label>
         </div>
       </div>
     </div>
 
-    <div class="filter-group mb-4 pb-3 border-bottom border-light-subtle" v-if="models.length > 0">
-      <h6 class="fw-bold d-flex justify-content-between align-items-center mb-3 text-dark cursor-pointer" @click="isModelExpanded = !isModelExpanded">
-        Dòng Máy <span class="toggle-icon" :class="{ 'expanded': isModelExpanded }"></span>
-      </h6>
-      <div v-show="isModelExpanded">
-        <div class="form-check custom-checkbox mb-2" v-for="model in visibleModels" :key="model.name">
-          <input class="form-check-input" type="checkbox" :id="'model-'+model.name" :value="model.name" v-model="localSelectedModels">
-          <label class="form-check-label text-secondary d-flex justify-content-between w-100 pe-4" :for="'model-'+model.name">
-            <span class="text-truncate">{{ model.name }}</span><span class="text-muted ms-2">({{ model.count }})</span>
+    <div class="filter-group mb-4 pb-4 border-bottom">
+      <div class="d-flex justify-content-between align-items-center mb-3 cursor-pointer" @click="toggle('model')">
+        <h5 class="fw-bold mb-0 text-dark fs-5">Phone Model</h5>
+        <i class="bi text-dark" :class="open.model ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
+      </div>
+      <div v-show="open.model" class="filter-options">
+        <div class="form-check mb-2" v-for="item in filterData.models" :key="item.name">
+          <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'model-'+item.name" :value="item.name" v-model="selectedModels">
+          <label class="form-check-label text-dark" :for="'model-'+item.name">
+            {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
           </label>
         </div>
-        <a href="#" v-if="models.length > 10" @click.prevent="showAllModels = !showAllModels" class="text-dark fw-bold small text-decoration-underline mt-2 d-inline-block">
-          {{ showAllModels ? '- Thu Gọn' : '+ Xem Thêm' }}
-        </a>
       </div>
     </div>
 
-    <div class="filter-group mb-4" v-if="features.length > 0">
-      <h6 class="fw-bold d-flex justify-content-between align-items-center mb-3 text-dark cursor-pointer" @click="isFeaturesExpanded = !isFeaturesExpanded">
-        Tính Năng <span class="toggle-icon" :class="{ 'expanded': isFeaturesExpanded }"></span>
-      </h6>
-      <div v-show="isFeaturesExpanded">
-        <div class="form-check custom-checkbox mb-2" v-for="feature in features" :key="feature.name">
-          <input class="form-check-input" type="checkbox" :id="'feat-'+feature.name" :value="feature.name" v-model="localSelectedFeatures">
-          <label class="form-check-label text-secondary d-flex justify-content-between w-100 pe-4" :for="'feat-'+feature.name">
-            <span class="text-truncate">{{ feature.name }}</span><span class="text-muted ms-2">({{ feature.count }})</span>
+    <div class="filter-group mb-4 pb-4 border-bottom">
+      <div class="d-flex justify-content-between align-items-center mb-3 cursor-pointer" @click="toggle('color')">
+        <h5 class="fw-bold mb-0 text-dark fs-5">Color</h5>
+        <i class="bi text-dark" :class="open.color ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
+      </div>
+      <div v-show="open.color" class="d-flex flex-wrap gap-2">
+        <div v-for="color in filterData.colors" :key="color.hex"
+             class="color-swatch rounded-circle cursor-pointer border"
+             :style="{ background: color.hex }"
+             :class="{ 'border-dark border-2 scale-up': selectedColors.includes(color.hex) }"
+             @click="toggleColor(color.hex)">
+        </div>
+        <div class="w-100 mt-2">
+          <span class="text-decoration-underline small cursor-pointer text-dark fw-medium">+ Show More</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-group mb-4 pb-4 border-bottom">
+      <div class="d-flex justify-content-between align-items-center mb-3 cursor-pointer" @click="toggle('caseFeature')">
+        <h5 class="fw-bold mb-0 text-dark fs-5">Case Features</h5>
+        <i class="bi text-dark" :class="open.caseFeature ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
+      </div>
+      <div v-show="open.caseFeature" class="filter-options">
+        <div class="form-check mb-2" v-for="item in filterData.caseFeatures" :key="item.name">
+          <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'cf-'+item.name" :value="item.name" v-model="selectedFeatures">
+          <label class="form-check-label text-dark" :for="'cf-'+item.name">
+            {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
           </label>
         </div>
       </div>
     </div>
+
+    <div class="filter-group mb-4 pb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3 cursor-pointer" @click="toggle('screenFeature')">
+        <h5 class="fw-bold mb-0 text-dark fs-5">Screen Protector Features</h5>
+        <i class="bi text-dark" :class="open.screenFeature ? 'bi-dash-lg' : 'bi-plus-lg'"></i>
+      </div>
+      <div v-show="open.screenFeature" class="filter-options">
+        <div class="form-check mb-2" v-for="item in filterData.screenFeatures" :key="item.name">
+          <input class="form-check-input shadow-none rounded-1" type="checkbox" :id="'sf-'+item.name" :value="item.name" v-model="selectedFeatures">
+          <label class="form-check-label text-dark" :for="'sf-'+item.name">
+            {{ item.name }} <span class="text-secondary small">({{ item.count }})</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, reactive } from 'vue'
 
-type FilterItem = { name: string; count: number }
+// Kết nối với CategoryView để lọc thật
+const selectedTypes = defineModel<string[]>('selectedTypes', { default: () => [] })
+const selectedModels = defineModel<string[]>('selectedModels', { default: () => [] })
+const selectedFeatures = defineModel<string[]>('selectedFeatures', { default: () => [] })
+const selectedColors = ref<string[]>([])
 
-const props = defineProps<{
-  types: FilterItem[], 
-  models: FilterItem[], 
-  features: FilterItem[],
-  selectedTypes: string[], 
-  selectedModels: string[], 
-  selectedFeatures: string[]
-}>()
+// Trạng thái Đóng/Mở của các thẻ
+const open = reactive({
+  type: true,
+  model: true,
+  color: true,
+  caseFeature: true,
+  screenFeature: true
+})
 
-const emit = defineEmits(['update:selectedTypes', 'update:selectedModels', 'update:selectedFeatures'])
+const toggle = (section: keyof typeof open) => {
+  open[section] = !open[section]
+}
 
-const isTypeExpanded = ref(true)
-const isModelExpanded = ref(true)
-const isFeaturesExpanded = ref(true)
-const showAllModels = ref(false)
+const toggleColor = (hex: string) => {
+  const index = selectedColors.value.indexOf(hex)
+  if (index > -1) selectedColors.value.splice(index, 1)
+  else selectedColors.value.push(hex)
+}
 
-const visibleModels = computed(() => showAllModels.value ? props.models : props.models.slice(0, 10))
-
-const localSelectedTypes = computed({ get: () => props.selectedTypes, set: (v) => emit('update:selectedTypes', v) })
-const localSelectedModels = computed({ get: () => props.selectedModels, set: (v) => emit('update:selectedModels', v) })
-const localSelectedFeatures = computed({ get: () => props.selectedFeatures, set: (v) => emit('update:selectedFeatures', v) })
+// Dữ liệu giả lập chuẩn xác 100% theo ảnh bạn gửi
+const filterData = {
+  types: [
+    { name: 'Super Thin Case', count: 1 },
+    { name: 'Magnetic Case', count: 1 },
+    { name: 'Flex Case', count: 1 },
+    { name: 'Glass Screen Protector', count: 1 },
+    { name: 'Privacy Glass Screen Protector', count: 1 },
+    { name: 'Active Case', count: 1 },
+    { name: 'RePeel Case', count: 1 }
+  ],
+  models: [
+    { name: 'iPhone 17 Pro Max', count: 7 }
+  ],
+  colors: [
+    { hex: '#333333' }, { hex: '#000000' }, { hex: '#e2dcca' }, { hex: '#ffffff' }, 
+    { hex: '#e88c4a' }, { hex: '#424b5a' }, { hex: '#4f4756' }, { hex: '#f4f4f4' }, 
+    { hex: 'linear-gradient(135deg, #555, #000)' }, { hex: '#fdfdfd' }, { hex: '#1a1f24' }, 
+    { hex: '#1d5939' }, { hex: '#b5ab9d' }, { hex: '#183f6b' }
+  ],
+  caseFeatures: [
+    { name: 'Drop-Tested', count: 2 },
+    { name: 'Easy Grip', count: 1 },
+    { name: 'Magsafe-Compatible', count: 1 },
+    { name: 'Pocket friendly', count: 4 },
+    { name: 'Shockproof', count: 1 },
+    { name: 'Snug fit', count: 4 },
+    { name: 'Thin Design', count: 1 }
+  ],
+  screenFeatures: [
+    { name: '9H Hardness Rating', count: 1 },
+    { name: '28° Privacy Filtering', count: 1 },
+    { name: 'Reinforced Silicone Edges', count: 1 },
+    { name: '3D Design', count: 1 },
+    { name: 'HD Clarity', count: 1 },
+    { name: 'Oleophobic Coating', count: 1 },
+    { name: 'Anti-Fingerprint', count: 1 }
+  ]
+}
 </script>
 
 <style scoped>
-.custom-checkbox .form-check-input { border-radius: 2px; border-color: #d2d2d7; width: 1.1em; height: 1.1em; cursor: pointer; margin-top: 0.2em; }
-.custom-checkbox .form-check-input:checked { background-color: #212529; border-color: #212529; }
-.custom-checkbox label { cursor: pointer; font-size: 0.9rem; }
-.toggle-icon { width: 14px; height: 14px; position: relative; display: inline-block; transition: transform 0.4s ease; }
-.toggle-icon::before, .toggle-icon::after { content: ""; position: absolute; background-color: #212529; transition: transform 0.4s ease; }
-.toggle-icon::before { top: 6px; left: 0; width: 14px; height: 2px; }
-.toggle-icon::after { top: 0; left: 6px; width: 2px; height: 14px; }
-.toggle-icon.expanded { transform: rotate(180deg); }
-.toggle-icon.expanded::after { transform: rotate(90deg); }
+.cursor-pointer { cursor: pointer; }
+
+/* Tùy chỉnh ô Checkbox vuông vắn, viền nhạt giống Peel */
+.form-check-input {
+  width: 1.1em;
+  height: 1.1em;
+  margin-top: 0.25em;
+  border-color: #adb5bd;
+}
+.form-check-input:checked {
+  background-color: #000;
+  border-color: #000;
+}
+
+/* Tùy chỉnh các chấm màu (Color Swatches) */
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-color: #dee2e6 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+.color-swatch.scale-up {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000;
+}
 </style>

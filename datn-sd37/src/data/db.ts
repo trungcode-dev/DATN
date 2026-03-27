@@ -61,7 +61,23 @@ export const productsDB = [
     description: "Ốp lưng siêu mỏng, giữ nguyên thiết kế máy.",
     specs: { thickness: "0.35mm", material: "Nhựa PP" },
     gallery: ["https://placehold.co/600x600/222/fff?text=Case+Front"]
-  }
+  },
+
+  // --- CASES (ỐP LƯNG) ---
+  { id: 1, type: "Super Thin Case", category: "Apple", name: "iPhone 17 Pro Max Super Thin Case", price: 39.00, oldPrice: null, image: "https://int.buypeel.com/cdn/shop/files/peel_home_hero_desktop_1.jpg?v=1725916053&width=600" },
+  { id: 2, type: "Magnetic Case", category: "Samsung", name: "Galaxy S24 Ultra Magnetic Case", price: 45.00, oldPrice: 55.00, image: "https://int.buypeel.com/cdn/shop/files/Collection_Apple_WatchCase_83907797-29be-410a-b850-93a830239276.jpg?v=1734633765&width=600" },
+  
+  // --- SCREEN PROTECTORS (KÍNH CƯỜNG LỰC) ---
+  { id: 3, type: "Glass Screen Protector", category: "Apple", name: "iPhone 16 Pro Max Glass Screen Protector", price: 29.00, oldPrice: 35.00, image: "https://int.buypeel.com/cdn/shop/files/i16_Glass_Features.png?v=1743691200&width=600" },
+  { id: 4, type: "Privacy Screen Protector", category: "Apple", name: "iPhone 16 Pro Privacy Protector", price: 39.00, oldPrice: 60.00, image: "https://int.buypeel.com/cdn/shop/files/callout_privacy-glassArtboard-1.png?v=1744605416&width=600" },
+
+  // --- CHARGING (SẠC) - Lấy từ ảnh của bạn ---
+  { id: 5, type: "Wireless Charger", category: "Charging", name: "Qi2 3-in-1 Folding Wireless Charging Stand", price: 79.99, oldPrice: 90.00, image: "https://int.buypeel.com/cdn/shop/files/Base_Station_Hero_2_2x_8eb14032-17a4-44df-b4d6-84e1fc3f59fa.jpg?v=1730999516&width=600" },
+  { id: 6, type: "Car Charger", category: "Charging", name: "Magnetic Wireless Car Charging Mount", price: 44.00, oldPrice: 49.00, image: "https://int.buypeel.com/cdn/shop/files/Collection_Apple_WatchCase_83907797-29be-410a-b850-93a830239276.jpg?v=1734633765&width=600" },
+
+  // --- ACCESSORIES (PHỤ KIỆN) - Lấy từ ảnh của bạn ---
+  { id: 7, type: "Monitor", category: "Accessories", name: "16\" Portable Monitor", price: 275.00, oldPrice: 375.00, image: "https://placehold.co/600x600/f1f1f1/333?text=Monitor" },
+  { id: 8, type: "Backpack", category: "Accessories", name: "Terra Recycled 16\" Laptop Backpack", price: 45.00, oldPrice: 63.99, image: "https://placehold.co/600x600/f1f1f1/333?text=Backpack" }
 ];
 
 export const comparisonsData = [
@@ -103,3 +119,5 @@ export const cartInitialState = {
   shipping: 0.00,
   total: 1269.00
 };
+
+

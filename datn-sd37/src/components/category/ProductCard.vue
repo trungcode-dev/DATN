@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 // ĐÃ FIX: Dùng đường dẫn tương đối trỏ chính xác vào file db
-import { type Product } from '../data/db'
+import { type Product } from '../../data/db'
 defineProps<{ product: Product }>()
 defineEmits(['add-to-cart', 'quick-view'])
 </script>
