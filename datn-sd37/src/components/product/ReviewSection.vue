@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div class="review-section">
     <div class="text-center mb-5">
       <h2 class="fw-bold text-dark display-6" style="letter-spacing: -1px;">Đánh Giá Từ Khách Hàng</h2>
@@ -24,4 +24,4 @@
       </div>
     </div>
   </div>
-</template> -->
+</template>

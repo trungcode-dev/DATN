@@ -1,26 +1,25 @@
 <template>
-  <div class="feature-section py-5 my-5 bg-white" style="font-family: 'Inter', sans-serif;">
-    <div class="container-fluid px-4 px-lg-5">
+  <div class="feature-section py-5 my-4 bg-white" style="font-family: 'Inter', sans-serif;">
+    <div class="container-fluid px-4 px-xl-5">
       
-      <div class="row g-4 justify-content-center">
-        <div class="col-md-4 col-sm-6 mb-4 mb-md-0" v-for="(feat, index) in features" :key="index">
+      <div class="d-flex flex-nowrap overflow-x-auto pb-4 gap-3 gap-md-4 scroll-container justify-content-xl-center">
+        
+        <router-link :to="feat.link" 
+                     class="feature-card flex-shrink-0 text-decoration-none text-center group" 
+                     v-for="(feat, index) in features" :key="index">
           
-          <router-link :to="feat.link" class="feature-card d-block text-decoration-none text-center text-md-start group">
-            
-            <div class="img-wrapper mb-4 rounded-3 overflow-hidden position-relative" style="aspect-ratio: 16/10; background-color: #f1f1f1;">
-              <img :src="feat.image" :alt="feat.title" class="img-fluid w-100 h-100 object-fit-cover transition-transform duration-500">
-            </div>
+          <div class="img-wrapper mb-3 rounded-4 overflow-hidden position-relative" style="background-color: #f4f4f4; aspect-ratio: 1 / 1.1;">
+            <img :src="feat.image" :alt="feat.title" class="img-fluid w-100 h-100 object-fit-cover transition-transform duration-500">
+          </div>
 
-            <h4 class="fw-bold text-dark mb-2 px-1">{{ feat.title }}</h4>
-            <p class="text-secondary mb-3 px-1 lh-base" style="font-size: 0.95rem;">{{ feat.description }}</p>
-            
-            <span class="shop-link fw-medium text-dark d-inline-flex align-items-center px-1 position-relative transition-colors">
-              {{ feat.linkLabel }}
-              <i class="bi bi-arrow-right ms-2 transition-transform duration-300"></i>
-            </span>
-          </router-link>
+          <h6 class="fw-bold text-dark mb-2" style="font-size: 0.9rem;">{{ feat.title }}</h6>
+          
+          <p class="text-secondary mb-1 lh-sm mx-auto" style="font-size: 0.8rem; max-width: 90%;" v-html="feat.description"></p>
+          
+          <p v-if="feat.footnote" class="text-muted mt-2 mb-0" style="font-size: 0.65rem; font-style: italic;">{{ feat.footnote }}</p>
+        
+        </router-link>
 
-        </div>
       </div>
 
     </div>
@@ -30,81 +29,88 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// Dữ liệu 3 khối tính năng chính (Việt hóa theo đúng triết lý của Peel)
+// Dữ liệu chuẩn xác 100% theo ảnh giao diện mẫu của bạn
 const features = ref([
   {
-    image: 'https://int.buypeel.com/cdn/shop/files/peel_home_hero_desktop_1.jpg?v=1725916053&width=1000', // Ảnh minh họa độ mỏng
-    title: 'Ốp lưng siêu mỏng 0.02in',
-    description: 'Giữ nguyên cảm giác cầm nắm chân thực như điện thoại trần, không gây cộm hay nặng máy.',
-    linkLabel: 'Mua Ốp Lưng Siêu Mỏng',
-    link: '/shop-all' // Dẫn đến trang tất cả ốp lưng
+    image: 'https://int.buypeel.com/cdn/shop/files/peel_home_hero_desktop_1.jpg?v=1725916053&width=400', 
+    title: 'Super Thin Case',
+    description: '0.02in Thin<br>Branding-Free<br>Everyday Protection',
+    link: '/shop-all'
   },
   {
-    image: 'https://int.buypeel.com/cdn/shop/files/Collection_Apple_WatchCase_83907797-29be-410a-b850-93a830239276.jpg?v=1734633765&width=1000', // Ảnh minh họa thiết kế tối giản
-    title: 'Thiết kế tối giản, không logo',
-    description: 'Chỉ tập trung vào vẻ đẹp nguyên bản của thiết bị, hoàn toàn loại bỏ các thương hiệu thừa thãi.',
-    linkLabel: 'Xem Các Thiết Kế Tối Giản',
-    link: '/shop-all' // Cũng dẫn đến trang ốp
+    image: 'https://int.buypeel.com/cdn/shop/files/Collection_Apple_WatchCase_83907797-29be-410a-b850-93a830239276.jpg?v=1734633765&width=400', 
+    title: 'Magnetic Case',
+    description: '0.07in Thin<br>Embedded Magnets<br>Drop-Tested',
+    link: '/shop-all'
   },
   {
-    image: 'https://int.buypeel.com/cdn/shop/files/i16_Glass_Features.png?v=1743691200&width=1000', // Ảnh minh họa bảo vệ (Kính cường lực)
-    title: 'Bảo vệ màn hình cao cấp',
-    description: 'Kính cường lực tràn viền với độ cứng 9H, chống trầy xước và va đập tối ưu.',
-    linkLabel: 'Mua Kính Cường Lực',
-    link: '/iphone-protectors' // Dẫn đến trang kính cường lực iPhone
+    image: 'https://placehold.co/400x440/e9e9e9/333?text=Active+Case', 
+    title: 'Active Case',
+    description: '0.08in Thin<br>Reinforced Bumper<br>10ft Drop-Tested',
+    footnote: '*previously named the Bumper Case',
+    link: '/shop-all'
+  },
+  {
+    image: 'https://placehold.co/400x440/e9e9e9/333?text=Flex+Case', 
+    title: 'Flex Case',
+    description: '0.05in Thin<br>Flexible Material<br>8ft Drop-Tested',
+    link: '/shop-all'
+  },
+  {
+    image: 'https://placehold.co/400x440/e9e9e9/333?text=RePeel+Case', 
+    title: 'RePeel Case',
+    description: 'Faux Leather<br>Made from Recycled Apple Peels',
+    link: '/shop-all'
+  },
+  {
+    image: 'https://int.buypeel.com/cdn/shop/files/i16_Glass_Features.png?v=1743691200&width=400', 
+    title: 'Screen Protection',
+    description: 'Protect Your Screen with HD Clarity',
+    link: '/iphone-protectors'
+  },
+  {
+    image: 'https://int.buypeel.com/cdn/shop/files/Base_Station_Hero_2_2x_8eb14032-17a4-44df-b4d6-84e1fc3f59fa.jpg?v=1730999516&width=400', 
+    title: 'Charging Solutions',
+    description: 'Wireless Power Banks, Charging Stands, Watch Chargers, & More',
+    link: '/accessories'
   }
 ])
 </script>
 
 <style scoped>
-/* Hiệu ứng zoom nhẹ hình ảnh khi di chuột vào khối (group-hover style) */
+/* TRỌNG TÂM: Ẩn thanh cuộn mặc định của trình duyệt để nhìn UI sạch sẽ như App */
+.scroll-container {
+  -ms-overflow-style: none;  /* Cho IE và Edge */
+  scrollbar-width: none;  /* Cho Firefox */
+  scroll-behavior: smooth;
+}
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Cho Chrome, Safari và Opera */
+}
+
+/* Định dạng kích thước thẻ để khi thu nhỏ màn hình nó không bị bóp méo, mà cho phép vuốt ngang */
+.feature-card {
+  flex: 1 1 0; /* Cho phép giãn đều trên màn hình lớn */
+  min-width: 150px; /* Giữ kích thước tối thiểu trên điện thoại để có thể vuốt */
+  max-width: 220px; /* Khống chế không cho quá to trên màn hình 4K */
+}
+
+/* Hiệu ứng zoom nhẹ hình ảnh khi hover chuột */
 .feature-card:hover img {
   transform: scale(1.05);
 }
 
-/* Hiệu ứng mũi tên dịch chuyển khi di chuột vào khối */
-.feature-card:hover .bi-arrow-right {
-  transform: translateX(5px);
-}
-
-/* Hiệu ứng gạch chân nút giả chuẩn UI Peel */
-.shop-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 1.5px;
-  bottom: -2px;
-  left: 0;
-  background-color: #000;
-  transition: width 0.3s ease;
-}
-
-.feature-card:hover .shop-link::after {
-  width: 100%;
-}
-
-/* Thêm các helper class cho transition mượt mà */
 .transition-transform {
   transition-property: transform;
-}
-.transition-colors {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-}
-.duration-300 {
-  transition-duration: 300ms;
 }
 .duration-500 {
   transition-duration: 500ms;
 }
 
-/* Responsive tốt cho Mobile */
-@media (max-width: 576px) {
-  .row-cols-2 {
-    row-gap: 2rem !important;
-  }
-  .px-4 {
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
+/* Tinh chỉnh riêng cho Mobile */
+@media (max-width: 768px) {
+  .feature-card {
+    min-width: 140px; /* Trên điện thoại nhỏ lại một chút xíu */
   }
 }
 </style>

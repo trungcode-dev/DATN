@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div class="product-detail-page py-5" style="font-family: 'Inter', sans-serif;">
     <div class="container px-4 px-lg-5" v-if="product">
       
@@ -68,4 +68,4 @@ const handleAddToCart = (payload: { product: Product, quantity: number }) => {
   console.log('Thêm giỏ hàng từ trang Chi Tiết:', payload.product.name, 'Số lượng:', payload.quantity)
   // Sau này Người 1 (Kỹ sư nền tảng) sẽ kết nối hàm từ store vào đây
 }
-</script> -->
+</script>
