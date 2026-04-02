@@ -42,6 +42,11 @@ const router = createRouter({
       path: '/:categorySlug',
       name: 'category',
       component: CategoryView
+    },
+    {
+      path: '/admin',
+      name: 'AdminDashboard',
+      component: () => import('../views/AdminView.vue')
     }
   ],
   // Tính năng UX cực kỳ quan trọng: Tự động cuộn lên đầu trang khi chuyển trang
