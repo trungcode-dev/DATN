@@ -4,33 +4,33 @@
     <header class="top-nav-glass sticky-top d-flex align-items-center justify-content-between px-4 z-3">
       
       <div class="d-flex align-items-center gap-2">
-        <div class="bg-indigo text-white rounded-3 d-flex align-items-center justify-content-center shadow-indigo" style="width: 36px; height: 36px;">
+        <div class="bg-dark-peel text-white rounded-3 d-flex align-items-center justify-content-center shadow-peel" style="width: 36px; height: 36px;">
           <i class="bi bi-layers-fill fs-5"></i>
         </div>
-        <h4 class="fw-black mb-0 text-slate-800 tracking-tight" style="letter-spacing: 0.5px;">LATRA<span class="text-indigo"></span></h4>
+        <h4 class="fw-black mb-0 text-slate-800 tracking-tight" style="letter-spacing: 0.5px;">LATRA</h4>
       </div>
 
       <div class="d-flex align-items-center gap-1 bg-slate-100 p-1 rounded-pill border border-slate-200 shadow-sm">
-        <button @click="switchTab('pos')" class="btn nav-pill transition-all fw-semibold" :class="activeTab === 'pos' ? 'active shadow-sm' : 'text-slate-500 hover-text-dark'">
+        <button @click="switchTab('pos')" class="btn nav-pill transition-all fw-semibold" :class="activeTab === 'pos' ? 'active bg-dark-peel text-white shadow-peel' : 'text-slate-500 hover-text-dark'">
           <i class="bi bi-cart3 me-1"></i> Bán hàng
         </button>
-        <button @click="switchTab('dashboard')" class="btn nav-pill transition-all fw-semibold" :class="activeTab === 'dashboard' ? 'active shadow-sm' : 'text-slate-500 hover-text-dark'">
+        <button @click="switchTab('dashboard')" class="btn nav-pill transition-all fw-semibold" :class="activeTab === 'dashboard' ? 'active bg-dark-peel text-white shadow-peel' : 'text-slate-500 hover-text-dark'">
           <i class="bi bi-grid-1x2 me-1"></i> Tổng quan
         </button>
-        <button v-for="item in menuItems" :key="item.id" @click="switchTab(item.id)" class="btn nav-pill transition-all fw-semibold" :class="activeTab === item.id ? 'active shadow-sm' : 'text-slate-500 hover-text-dark'">
+        <button v-for="item in menuItems" :key="item.id" @click="switchTab(item.id)" class="btn nav-pill transition-all fw-semibold" :class="activeTab === item.id ? 'active bg-dark-peel text-white shadow-peel' : 'text-slate-500 hover-text-dark'">
           <i :class="item.icon" class="me-1"></i> {{ item.name }}
         </button>
       </div>
 
       <div class="d-flex align-items-center gap-3">
         <div class="text-slate-500 fw-medium small d-flex align-items-center gap-2 bg-white px-3 py-2 rounded-pill shadow-sm border border-slate-100">
-          <i class="bi bi-clock text-indigo"></i> {{ currentTime }}
+          <i class="bi bi-clock text-dark-peel"></i> {{ currentTime }}
         </div>
         <button class="btn btn-white rounded-circle shadow-sm border border-slate-100 d-flex align-items-center justify-content-center hover-lift position-relative" style="width: 40px; height: 40px;">
           <i class="bi bi-bell text-slate-700 fs-5"></i>
-          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-white rounded-circle"></span>
+          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-dark-peel border border-white rounded-circle"></span>
         </button>
-        <div class="bg-indigo text-white rounded-circle fw-bold d-flex align-items-center justify-content-center shadow-indigo cursor-pointer hover-lift" style="width: 40px; height: 40px; font-size: 0.85rem;">
+        <div class="bg-dark-peel text-white rounded-circle fw-bold d-flex align-items-center justify-content-center shadow-peel cursor-pointer hover-lift" style="width: 40px; height: 40px; font-size: 0.85rem;">
           AD
         </div>
       </div>
@@ -51,7 +51,7 @@
               
               <div class="position-relative" style="width: 320px;">
                 <i class="bi bi-search position-absolute top-50 translate-middle-y text-slate-400 ms-3"></i>
-                <input v-model="posSearch" type="text" class="form-control form-control-lg bg-white border-0 shadow-sm rounded-pill ps-5 fs-6 fw-medium text-slate-700 focus-ring-indigo" placeholder="Tìm sản phẩm, SKU...">
+                <input v-model="posSearch" type="text" class="form-control form-control-lg bg-white border-0 shadow-sm rounded-pill ps-5 fs-6 fw-medium text-slate-700 focus-ring-peel" placeholder="Tìm sản phẩm, SKU...">
               </div>
             </div>
 
@@ -65,10 +65,10 @@
                 <div v-for="item in posFilteredProducts" :key="item.id" class="col-xl-4 col-md-6">
                   <div class="card product-card border-0 shadow-sm rounded-4 h-100 d-flex flex-column p-3 cursor-pointer transition-all hover-lift" @click="addToCart(item)">
                     <div class="d-flex justify-content-between align-items-start mb-3">
-                      <div class="bg-slate-50 text-indigo rounded-3 d-flex align-items-center justify-content-center border border-slate-100" style="width: 48px; height: 48px;">
+                      <div class="bg-slate-100 text-dark-peel rounded-3 d-flex align-items-center justify-content-center border border-slate-200" style="width: 48px; height: 48px;">
                         <i class="bi bi-phone fs-4"></i>
                       </div>
-                      <span class="badge rounded-pill fw-medium" :class="getAvailableStock(item) > 5 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-danger'">
+                      <span class="badge rounded-pill fw-medium" :class="getAvailableStock(item) > 5 ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-500'">
                         Tồn: {{ getAvailableStock(item) }}
                       </span>
                     </div>
@@ -80,7 +80,7 @@
                     
                     <div class="mt-auto d-flex justify-content-between align-items-center pt-3 border-top border-slate-100">
                       <div class="fw-black text-slate-800 fs-5">{{ formatMoney(item.price) }}</div>
-                      <button class="btn btn-indigo-light btn-sm rounded-circle d-flex align-items-center justify-content-center transition-all" style="width: 32px; height: 32px;" :disabled="getAvailableStock(item) <= 0">
+                      <button class="btn btn-light-peel btn-sm rounded-circle d-flex align-items-center justify-content-center transition-all" style="width: 32px; height: 32px;" :disabled="getAvailableStock(item) <= 0">
                         <i class="bi bi-plus-lg fw-bolder"></i>
                       </button>
                     </div>
@@ -95,7 +95,7 @@
               
               <div class="p-4 border-bottom border-slate-100 bg-white d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center gap-2">
-                  <i class="bi bi-basket-fill text-indigo fs-5"></i>
+                  <i class="bi bi-basket-fill text-dark-peel fs-5"></i>
                   <h6 class="fw-bolder text-slate-800 mb-0">HÓA ĐƠN MỚI</h6>
                 </div>
                 <span class="badge bg-slate-100 text-slate-600 rounded-pill px-3 py-2 fw-semibold border border-slate-200">
@@ -132,14 +132,14 @@
                       <div class="text-end">
                         <div class="mb-1">
                           <select v-model="item.voucherId" class="form-select form-select-sm border-0 bg-transparent shadow-none fw-semibold text-end pe-3 py-0 cursor-pointer" 
-                                  :class="item.voucherId ? 'text-indigo' : 'text-slate-400'" style="font-size: 0.75rem;">
+                                  :class="item.voucherId ? 'text-dark-peel' : 'text-slate-400'" style="font-size: 0.75rem;">
                             <option value="">Thêm voucher</option>
                             <option v-for="v in getValidVouchersForItem(item, index)" :key="v.id" :value="v.id" class="text-slate-700">
                               {{ v.id }} (-{{ v.discount }}%)
                             </option>
                           </select>
                         </div>
-                        <div class="fw-black text-danger fs-5 lh-1">{{ formatMoney(calculateItemTotal(item)) }}</div>
+                        <div class="fw-black text-slate-800 fs-5 lh-1">{{ formatMoney(calculateItemTotal(item)) }}</div>
                       </div>
                     </div>
                   </div>
@@ -151,7 +151,7 @@
                   <span>Tổng tiền hàng ({{ cart.reduce((s, i) => s + i.qty, 0) }}):</span>
                   <span class="text-slate-700">{{ formatMoney(cartRawTotal) }}</span>
                 </div>
-                <div class="d-flex justify-content-between mb-3 text-indigo fw-semibold small">
+                <div class="d-flex justify-content-between mb-3 text-dark-peel fw-semibold small">
                   <span>Voucher giảm giá:</span>
                   <span>- {{ formatMoney(cartTotalDiscount) }}</span>
                 </div>
@@ -161,7 +161,7 @@
                   <span class="fw-black fs-2 text-slate-800 tracking-tight lh-1">{{ formatMoney(cartFinalTotal) }}</span>
                 </div>
 
-                <button class="btn btn-indigo w-100 mt-4 py-3 fw-bold fs-6 rounded-4 shadow-indigo hover-lift transition-all d-flex justify-content-center align-items-center gap-2" @click="handleCheckout">
+                <button class="btn btn-dark-peel w-100 mt-4 py-3 fw-bold fs-6 rounded-4 shadow-peel hover-lift transition-all d-flex justify-content-center align-items-center gap-2" @click="handleCheckout">
                   <i class="bi bi-credit-card-fill"></i> TẠO ĐƠN HÀNG
                 </button>
               </div>
@@ -174,7 +174,7 @@
           <div class="row g-4 mb-4">
             <div class="col-md-3" v-for="(stat, idx) in dashboardStats" :key="idx">
               <div class="bg-white p-4 rounded-4 shadow-sm border border-slate-100 h-100 d-flex flex-row align-items-center gap-4 hover-lift transition-all cursor-pointer">
-                <div class="rounded-circle d-flex align-items-center justify-content-center bg-indigo-50 text-indigo" style="width: 56px; height: 56px;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center bg-slate-100 text-dark-peel" style="width: 56px; height: 56px;">
                   <i :class="stat.icon" class="fs-4"></i>
                 </div>
                 <div>
@@ -199,9 +199,9 @@
             <div class="d-flex gap-3">
               <div class="position-relative" style="width: 300px;">
                 <i class="bi bi-search position-absolute top-50 translate-middle-y text-slate-400 ms-3"></i>
-                <input v-model="searchQuery" type="text" class="form-control bg-slate-50 border border-slate-200 text-slate-700 ps-5 py-2 shadow-none rounded-pill fw-medium focus-ring-indigo" placeholder="Tìm kiếm...">
+                <input v-model="searchQuery" type="text" class="form-control bg-slate-50 border border-slate-200 text-slate-700 ps-5 py-2 shadow-none rounded-pill fw-medium focus-ring-peel" placeholder="Tìm kiếm...">
               </div>
-              <button @click="openModal('add')" class="btn btn-indigo fw-semibold px-4 py-2 rounded-pill shadow-indigo hover-lift d-flex align-items-center gap-2">
+              <button @click="openModal('add')" class="btn btn-dark-peel fw-semibold px-4 py-2 rounded-pill shadow-peel hover-lift d-flex align-items-center gap-2">
                 <i class="bi bi-plus-lg"></i> Thêm mới
               </button>
             </div>
@@ -223,15 +223,15 @@
                 </tr>
                 <tr v-for="row in filteredData" :key="row.id" class="transition-all hover-bg-slate">
                   <td class="ps-4 py-3 border-bottom border-slate-50" v-for="col in currentSchema" :key="col.key">
-                    <span v-if="col.type === 'status'" class="badge fw-medium px-3 py-2 rounded-pill" :class="row[col.key] === 'Hoạt động' || row[col.key] === 'Hoàn thành' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'">{{ row[col.key] }}</span>
+                    <span v-if="col.type === 'status'" class="badge fw-medium px-3 py-2 rounded-pill" :class="row[col.key] === 'Hoạt động' || row[col.key] === 'Hoàn thành' ? 'bg-slate-800 text-white' : 'bg-slate-100 text-slate-500'">{{ row[col.key] }}</span>
                     <span v-else-if="col.type === 'money'" class="fw-bold text-slate-800">{{ formatMoney(row[col.key]) }}</span>
-                    <span v-else-if="col.type === 'percent'" class="fw-bold text-indigo">{{ row[col.key] }}%</span>
+                    <span v-else-if="col.type === 'percent'" class="fw-bold text-dark-peel">{{ row[col.key] }}%</span>
                     <span v-else-if="col.type === 'datetime'" class="text-slate-500 small fw-medium">{{ formatVNTime(row[col.key]) }}</span>
                     <span v-else-if="col.key === 'id'" class="text-slate-400 fw-semibold small">#{{ row[col.key] }}</span>
                     <span v-else class="text-slate-700 fw-medium">{{ row[col.key] }}</span>
                   </td>
                   <td class="text-end pe-4 py-3 border-bottom border-slate-50">
-                    <button @click="openModal('edit', row)" class="btn btn-sm btn-white text-indigo border border-slate-200 shadow-sm rounded-circle me-2 btn-action"><i class="bi bi-pencil-fill"></i></button>
+                    <button @click="openModal('edit', row)" class="btn btn-sm btn-white text-dark-peel border border-slate-200 shadow-sm rounded-circle me-2 btn-action"><i class="bi bi-pencil-fill"></i></button>
                     <button @click="deleteItem(row.id)" class="btn btn-sm btn-white text-danger border border-slate-200 shadow-sm rounded-circle btn-action"><i class="bi bi-trash3-fill"></i></button>
                   </td>
                 </tr>
@@ -255,16 +255,16 @@
               <form @submit.prevent="saveData">
                 <div class="mb-3" v-for="col in currentSchema" :key="col.key">
                   <label class="form-label small fw-semibold text-slate-500 mb-1">{{ col.label }}</label>
-                  <select v-if="col.options" v-model="formData[col.key]" class="form-select shadow-none border-slate-200 bg-white fw-medium text-slate-800 rounded-3 focus-ring-indigo" required>
+                  <select v-if="col.options" v-model="formData[col.key]" class="form-select shadow-none border-slate-200 bg-white fw-medium text-slate-800 rounded-3 focus-ring-peel" required>
                     <option v-for="opt in col.options" :key="opt" :value="opt">{{ opt }}</option>
                   </select>
-                  <input v-else-if="col.type === 'money' || col.type === 'number' || col.type === 'percent'" v-model.number="formData[col.key]" type="number" class="form-control shadow-none border-slate-200 bg-white fw-bold text-slate-800 rounded-3 focus-ring-indigo" required>
-                  <input v-else-if="col.type === 'datetime'" v-model="formData[col.key]" type="datetime-local" class="form-control shadow-none border-slate-200 bg-white fw-medium text-slate-800 rounded-3 focus-ring-indigo" required>
-                  <input v-else v-model="formData[col.key]" type="text" class="form-control shadow-none border-slate-200 bg-white fw-medium text-slate-800 rounded-3 focus-ring-indigo" required :disabled="col.key === 'id' && modalMode === 'edit'">
+                  <input v-else-if="col.type === 'money' || col.type === 'number' || col.type === 'percent'" v-model.number="formData[col.key]" type="number" class="form-control shadow-none border-slate-200 bg-white fw-bold text-slate-800 rounded-3 focus-ring-peel" required>
+                  <input v-else-if="col.type === 'datetime'" v-model="formData[col.key]" type="datetime-local" class="form-control shadow-none border-slate-200 bg-white fw-medium text-slate-800 rounded-3 focus-ring-peel" required>
+                  <input v-else v-model="formData[col.key]" type="text" class="form-control shadow-none border-slate-200 bg-white fw-medium text-slate-800 rounded-3 focus-ring-peel" required :disabled="col.key === 'id' && modalMode === 'edit'">
                 </div>
                 <div class="d-flex justify-content-end gap-2 pt-3 mt-4 border-top border-slate-100">
                   <button type="button" @click="closeModal" class="btn btn-white border border-slate-200 px-4 py-2 rounded-pill fw-semibold text-slate-600 hover-bg-slate">Hủy</button>
-                  <button type="submit" class="btn btn-indigo px-4 py-2 rounded-pill fw-bold shadow-indigo hover-lift">Lưu Thông Tin</button>
+                  <button type="submit" class="btn btn-dark-peel px-4 py-2 rounded-pill fw-bold shadow-peel hover-lift">Lưu Thông Tin</button>
                 </div>
               </form>
             </div>
@@ -424,7 +424,7 @@ const menuItems = [
   { id: 'products', name: 'Sản phẩm', icon: 'bi-box-seam' },
   { id: 'promotions', name: 'Khuyến mãi', icon: 'bi-ticket-perforated' },
   { id: 'customers', name: 'Khách hàng', icon: 'bi-people' },
-  { id: 'employees', name: 'Nhân sự', icon: 'bi-person-badge' },
+  { id: 'employees', name: 'Nhân viên', icon: 'bi-person-badge' }, // Đã đổi thành Nhân viên
   { id: 'settings', name: 'Cài đặt', icon: 'bi-gear' },
 ]
 
@@ -529,7 +529,7 @@ const deleteItem = (id: string) => {
 </script>
 
 <style scoped>
-/* === DESIGN SYSTEM: MODERN CLOUD SAAS === */
+/* === DESIGN SYSTEM: PEEL (MINIMALIST MONOCHROME) === */
 .text-slate-400 { color: #94a3b8 !important; }
 .text-slate-500 { color: #64748b !important; }
 .text-slate-600 { color: #475569 !important; }
@@ -541,18 +541,14 @@ const deleteItem = (id: string) => {
 .border-slate-100 { border-color: #f1f5f9 !important; }
 .border-slate-200 { border-color: #e2e8f0 !important; }
 
-/* Theme Colors: Indigo & Emerald */
-.text-indigo { color: #6366f1 !important; }
-.bg-indigo { background-color: #6366f1 !important; }
-.bg-indigo-50 { background-color: #eef2ff !important; }
-.btn-indigo { background-color: #6366f1; color: white; border: none; }
-.btn-indigo:hover { background-color: #4f46e5; color: white; }
-.btn-indigo-light { background-color: #eef2ff; color: #6366f1; border: none; }
-.btn-indigo-light:hover { background-color: #6366f1; color: white; }
-.shadow-indigo { box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.3); }
-
-.text-emerald-600 { color: #059669 !important; }
-.bg-emerald-50 { background-color: #ecfdf5 !important; }
+/* Theme Colors: Dark (Black/White Peel Aesthetic) */
+.text-dark-peel { color: #111111 !important; }
+.bg-dark-peel { background-color: #111111 !important; }
+.btn-dark-peel { background-color: #111111; color: white; border: 1px solid #111111; }
+.btn-dark-peel:hover { background-color: #000000; color: white; box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.2); }
+.btn-light-peel { background-color: #f3f4f6; color: #111111; border: none; }
+.btn-light-peel:hover { background-color: #e5e7eb; color: #111111; }
+.shadow-peel { box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1); }
 
 .fw-black { font-weight: 900 !important; }
 .fw-bolder { font-weight: 800 !important; }
@@ -568,7 +564,7 @@ const deleteItem = (id: string) => {
   height: 70px;
 }
 .nav-pill { color: #64748b; border-radius: 50px; padding: 6px 16px; font-size: 0.85rem; border: none; background: transparent; }
-.nav-pill.active { background-color: #ffffff; color: #1e293b !important; }
+.nav-pill.active { background-color: #111111 !important; color: #ffffff !important; }
 .hover-text-dark:hover { color: #1e293b !important; }
 
 /* Utilities & Animations */
@@ -580,15 +576,16 @@ const deleteItem = (id: string) => {
 .hover-bg-white:hover { background-color: #ffffff !important; }
 .hover-bg-slate:hover { background-color: #f8fafc !important; }
 
-.focus-ring-indigo:focus-within, .focus-ring-indigo:focus { 
-  border-color: #818cf8 !important; 
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important; 
+/* Focus Rings in Monochrome */
+.focus-ring-peel:focus-within, .focus-ring-peel:focus { 
+  border-color: #111111 !important; 
+  box-shadow: 0 0 0 1px #111111 !important; 
   background-color: #ffffff !important;
 }
 
 /* POS Cards & Cart */
 .product-card { border: 1px solid transparent; }
-.product-card:hover { border-color: rgba(99, 102, 241, 0.3); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important; }
+.product-card:hover { border-color: #cbd5e1; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important; }
 .cart-item-card { border: 1px solid transparent; }
 .cart-item-card:hover { border-color: #e2e8f0; }
 
